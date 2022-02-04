@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_content %}
+
+<div class="container">
+  <h2>My Products</h2>
+</div>
+  
+<div class="container">
+  <ul class="list-group list-group-flush">
+  {% for item in items %}
+    <li class="list-group-item">
+           <div class="media">
+                <div class="media-left">
+                  <img src="{{item.itemImage}}" class="media-object" style="width:100px;height:80px">
+                </div>
+                <div class="media-body">
+                  <h3 class="media-heading">{{item.itemName}}</h3>
+                  <p>{{item.itemDescription}}</p>
+                  <h4>Price:{{item.itemPrice}}</h4>
+                  {%if item.itemPrice == item.itemNewPrice %}
+                  <h4>NewPrice:No Change in price</h4>
+                  {% else %}
+                  <h4>NewPrice:{{item.itemNewPrice}}</h4>
+                  {% endif %}
+                </div>
+            </div>
+            <a href="{{item.itemUrl}}" class="btn btn-info" role="button">Buy Now</a>
+            <form action="delete" method="POST" style="float:right">
+            {% csrf_token %}
+            <input type="hidden" name="itempk" value="{{item.pk}}">
+            <button value="remove" type="submit"  class="btn btn-danger" > &nbsp; Delete</button>
+          </form>
+            <form action="edit" method="POST" style="float:right">
+            {% csrf_token %}
+            <input type="hidden" name="itempk" value="{{item.pk}}">
+            <button value="remove" type="submit"  class="btn btn-warning" > &nbsp; Refresh</button>
+          </form>
+          
+          
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}
